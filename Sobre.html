@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre Palette</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://kit.fontawesome.com/a2b4f5c0a0.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <header class="header-animado fade-in" style="animation-delay: 0.2s;">
+    <div class="logo">
+      <i class="fas fa-palette"></i>
+      <h1>Palette</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="inicio.html" class="transicion">Inicio</a></li>
+        <li><a href="index.html" class="transicion">Ir a la tienda</a></li>
+      </ul>
+    </nav>
+  </header>
+
+
+  <section class="intro fade-in" style="margin-top: 140px;">
+    <h2>Más que una tienda, un espacio para crear 🎨</h2>
+    <p>En <strong>Palette</strong> creemos que los regalos más especiales son los que llevan una parte de ti. Aquí puedes personalizar objetos con tus colores, frases y diseños favoritos, para que cada pieza sea realmente tuya.</p>
+    <a href="index.html" class="btn transicion">Ir a la tienda</a>
+  </section>
+
+  <footer class="fade-in">
+    <p>© 2025 Palette · Creado con 💖</p>
+  </footer>
+
+  <style>
+    /* --- Transición entre páginas (coherencia) --- */
+    body {
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    body.mostrar { opacity: 1; }
+  </style>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      document.body.classList.add("mostrar");
+      const elementos = document.querySelectorAll('.fade-in');
+      elementos.forEach((el, i) => {
+        el.style.animationDelay = `${i * 0.2 + 0.2}s`;
+      });
+
+      const enlaces = document.querySelectorAll("a.transicion");
+      enlaces.forEach(enlace => {
+        enlace.addEventListener("click", e => {
+          const href = enlace.getAttribute("href") || "";
+          if (href.startsWith("#")) return;
+          e.preventDefault();
+          const destino = enlace.getAttribute("href");
+          document.body.style.opacity = 0;
+          setTimeout(() => { window.location.href = destino; }, 400);
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

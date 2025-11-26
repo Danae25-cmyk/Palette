@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos - Palette</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #F4F4F4;
+      --primary: #8E5A3A;
+      --dark: #2A2A2A;
+      --accent: #F36C3A;
+      --secondary-accent: #24B3A1;
+      --highlight: #F3B431;
+      --olive: #A7B36A;
+      --card-shadow: rgba(0,0,0,0.06);
+        --primary: #24B3A1;
+        --accent: #8E5A3A;
+    }
+
+    * { box-sizing: border-box; }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      margin: 0;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* Navegación */
+    nav {
+      background: var(--primary);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 70px;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .brand-logo {
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: white !important;
+      font-size: 1.8rem;
+      text-decoration: none;
+    }
+
+    /* Logo responsive sizing */
+    .brand-logo img { height: 54px; width: auto; display: block; transition: height 200ms ease, transform 200ms ease; }
+    @media (max-width: 768px) { 
+      .brand-logo img { height: 48px; }
+      nav { height: 60px; padding: 6px 0; }
+      .nav-wrapper { height: 60px; padding: 0 20px; align-items: center; }
+    }
+    @media (max-width: 480px) { 
+      .brand-logo img { height: 40px; }
+      nav { height: 56px; padding: 4px 0; }
+      .nav-wrapper { height: 56px; padding: 0 12px; align-items: center; }
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      margin-left: auto;
+    }
+
+    .nav-links li {
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover { color: var(--accent) !important; }
+
+    .cart-icon-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    #cart-badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* Sección de productos */
+    .products-header {
+      margin-top: 70px;
+      padding: 60px 0 30px;
+      text-align: center;
+    }
+
+    .products-header h2 {
+      color: var(--primary);
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .products-header p {
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    /* Filtros */
+    .filter-bar {
+      background: #fff;
+      box-shadow: 0 4px 18px var(--card-shadow);
+      border-radius: 40px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 30px 0;
+    }
+
+    .filter-btn {
+      border: none;
+      background: transparent;
+      padding: 10px 18px;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      color: var(--primary);
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--secondary-accent);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Grid de productos */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 20px 0 60px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px var(--card-shadow);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.18);
+    }
+
+    .card-image {
+      position: relative;
+      height: 250px;
+      overflow: hidden;
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover .card-image img {
+      transform: scale(1.04);
+    }
+
+    .price-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255,255,255,0.95);
+      color: var(--primary);
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      font-size: 1rem;
+    }
+
+    .card-content {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .card-title {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .card-description {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+
+    .personalization-section {
+      padding: 15px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+
+    .personalization-section label {
+      display: block;
+      font-weight: 600;
+      color: var(--primary);
+      margin-top: 12px;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+    }
+
+    .personalization-section input[type="color"] {
+      width: 60px;
+      height: 40px;
+      border-radius: 8px;
+      border: 2px solid #ddd;
+      cursor: pointer;
+    }
+
+    .personalization-section input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .preview-box {
+      width: 100%;
+      height: 100px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .card-actions {
+      padding: 15px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .btn-custom {
+      background-color: var(--secondary-accent);
+      color: #fff;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      font-weight: 500;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      cursor: pointer;
+      flex: 1;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-custom:hover {
+      background-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(214, 180, 161, 0.4);
+    }
+
+    .btn-add {
+      background: linear-gradient(135deg, #34a853, #66bb6a);
+    }
+
+    .btn-add:hover {
+      background: linear-gradient(135deg, #2d9248, #57a65a);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h5 {
+      color: var(--primary);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .close-modal {
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .close-modal:hover { color: #000; }
+
+    .cart-item {
+      display: flex;
+      gap: 15px;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      align-items: center;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .cart-item-info { flex: 1; }
+
+    .cart-item-title {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .cart-item-details {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .cart-total {
+      text-align: right;
+      padding: 20px 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    /* Toast Mejorado */
+    .toast {
+      position: fixed;
+      top: 90px;
+      right: 30px;
+      background: white;
+      color: var(--primary);
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+      z-index: 10000;
+      opacity: 0;
+      transform: translateX(400px);
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      min-width: 300px;
+      border-left: 4px solid var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .toast::before {
+      content: '✓';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .toast-message {
+      flex: 1;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      background: var(--primary);
+      color: #fff;
+      padding: 40px 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-wrapper">
+      <a href="index.html" class="brand-logo" style="display:flex;align-items:center;gap:10px;">
+        <img src="images/logo_palette.png" alt="Palette logo" style="height:54px;width:auto;display:block;">
+      </a>
+      <ul class="nav-links">
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li>
+          <a href="#!" id="cart-btn">
+            <span class="cart-icon-wrapper">
+              <i class="material-icons">shopping_cart</i>
+              <span id="cart-badge">0</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="products-header">
+    <div class="container">
+      <h2>Nuestros <span style="color: var(--accent);">Productos</span></h2>
+      <p>Personaliza cada detalle y crea algo verdaderamente único</p>
+    </div>
+  </div>
+
+  <section class="container">
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="hogar">Hogar</button>
+      <button class="filter-btn" data-filter="decoracion">Decoración</button>
+      <button class="filter-btn" data-filter="cocina">Cocina</button>
+    </div>
+
+    <div class="product-grid">
+      
+      <div class="card producto hogar" data-id="silla">
+        <div class="card-image">
+          <img src="https://images.unsplash.com/photo-1503602642458-232111445657?w=400" alt="Silla">
+          <div class="price-badge">Bs. 150</div>
+        </div>
+        <div class="card-content">
+          <div class="card-title">Silla Personalizada</div>
+          <div class="card-description">Elige el color perfecto para tu espacio</div>
+          
+          <div class="personalization-section">
+            <label>Color:</label>
+            <input type="color" id="color-silla" value="#F36C3A" onchange="updatePreview('silla')">
+            
+            <label>Texto o frase:</label>
+            <input type="text" id="texto-silla" placeholder="Ej: Mi silla favorita" oninput="updatePreview('silla')">
+            
+            <div class="preview-box" id="preview-silla" style="background-color: #F36C3A;">
+              Vista previa
+            </div>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-custom btn-add" onclick="addToCart('silla')">
+            Añadir al carrito
+          </button>
+        </div>
+      </div>
+
+      <div class="card producto decoracion" data-id="maceta">
+        <div class="card-image">
+          <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400" alt="Maceta">
+          <div class="price-badge">Bs. 80</div>
+        </div>
+        <div class="card-content">
+          <div class="card-title">Maceta Artesanal</div>
+          <div class="card-description">Dale vida a tus plantas con estilo</div>
+          
+          <div class="personalization-section">
+            <label>Color:</label>
+            <input type="color" id="color-maceta" value="#A7B36A" onchange="updatePreview('maceta')">
+            
+            <label>Texto o frase:</label>
+            <input type="text" id="texto-maceta" placeholder="Ej: Grow with love" oninput="updatePreview('maceta')">
+            
+            <div class="preview-box" id="preview-maceta" style="background-color: #A7B36A;">
+              Vista previa
+            </div>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-custom btn-add" onclick="addToCart('maceta')">
+            Añadir al carrito
+          </button>
+        </div>
+      </div>
+
+      <div class="card producto decoracion" data-id="cuadro">
+        <div class="card-image">
+          <img src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=400" alt="Cuadro">
+          <div class="price-badge">Bs. 120</div>
+        </div>
+        <div class="card-content">
+          <div class="card-title">Cuadro Decorativo</div>
+          <div class="card-description">Personaliza tu pared con arte único</div>
+          
+          <div class="personalization-section">
+            <label>Color:</label>
+            <input type="color" id="color-cuadro" value="#8E5A3A" onchange="updatePreview('cuadro')">
+            
+            <label>Texto o frase:</label>
+            <input type="text" id="texto-cuadro" placeholder="Ej: Home sweet home" oninput="updatePreview('cuadro')">
+            
+            <div class="preview-box" id="preview-cuadro" style="background-color: #8E5A3A;">
+              Vista previa
+            </div>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-custom btn-add" onclick="addToCart('cuadro')">
+            Añadir al carrito
+          </button>
+        </div>
+      </div>
+
+      <div class="card producto cocina" data-id="taza">
+        <div class="card-image">
+          <img src="https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400" alt="Taza">
+          <div class="price-badge">Bs. 60</div>
+        </div>
+        <div class="card-content">
+          <div class="card-title">Taza Personalizada</div>
+          <div class="card-description">Tu café de cada mañana, más especial</div>
+          
+          <div class="personalization-section">
+            <label>Color:</label>
+            <input type="color" id="color-taza" value="#24B3A1" onchange="updatePreview('taza')">
+            
+            <label>Texto o frase:</label>
+            <input type="text" id="texto-taza" placeholder="Ej: Coffee lover" oninput="updatePreview('taza')">
+            
+            <div class="preview-box" id="preview-taza" style="background-color: #24B3A1;">
+              Vista previa
+            </div>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-custom btn-add" onclick="addToCart('taza')">
+            Añadir al carrito
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p><strong>Palette</strong> © 2025 - Creado con 💖</p>
+    </div>
+  </footer>
+
+  <!-- Modal del Carrito -->
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5><i class="material-icons">shopping_bag</i> Tu Carrito</h5>
+        <button class="close-modal" onclick="closeCart()">&times;</button>
+      </div>
+      <div id="cart-items"></div>
+      <div class="cart-total">
+        Total: Bs. <span id="cart-total">0</span>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-custom" style="background: var(--accent);" onclick="clearCart()">Vaciar</button>
+        <button class="btn-custom" onclick="checkout()">Comprar ahora</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const prices = {
+      'silla': 150,
+      'maceta': 80,
+      'cuadro': 120,
+      'taza': 60
+    };
+
+    const titles = {
+      'silla': 'Silla Personalizada',
+      'maceta': 'Maceta Artesanal',
+      'cuadro': 'Cuadro Decorativo',
+      'taza': 'Taza Personalizada'
+    };
+
+    function updatePreview(id) {
+      const color = document.getElementById(`color-${id}`).value;
+      const texto = document.getElementById(`texto-${id}`).value;
+      const preview = document.getElementById(`preview-${id}`);
+      
+      preview.style.backgroundColor = color;
+      preview.textContent = texto || 'Vista previa';
+    }
+
+    function getCart() {
+      const cart = localStorage.getItem('palette_cart');
+      return cart ? JSON.parse(cart) : [];
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem('palette_cart', JSON.stringify(cart));
+      updateCartUI();
+    }
+
+    function addToCart(id) {
+      const color = document.getElementById(`color-${id}`).value;
+      const texto = document.getElementById(`texto-${id}`).value;
+      
+      const item = {
+        id: id,
+        title: titles[id],
+        price: prices[id],
+        color: color,
+        texto: texto || 'Sin texto',
+        image: document.querySelector(`[data-id="${id}"] img`).src
+      };
+      
+      const cart = getCart();
+      cart.push(item);
+      saveCart(cart);
+      showToast(`${item.title} añadido al carrito ✨`);
+    }
+
+    function updateCartUI() {
+      const cart = getCart();
+      const badge = document.getElementById('cart-badge');
+      badge.textContent = cart.length;
+      
+      const cartItems = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p style="text-align: center; color: #999; padding: 40px 0;">Tu carrito está vacío</p>';
+        cartTotal.textContent = '0';
+        return;
+      }
+      
+      let total = 0;
+      cartItems.innerHTML = '';
+      
+      cart.forEach((item, index) => {
+        total += item.price;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.title}">
+          <div class="cart-item-info">
+            <div class="cart-item-title">${item.title}</div>
+            <div class="cart-item-details">
+              Color: <span style="display:inline-block;width:20px;height:20px;background:${item.color};border-radius:4px;vertical-align:middle;border:1px solid #ddd;"></span>
+              <br>Texto: ${item.texto}
+              <br><strong>Bs. ${item.price}</strong>
+            </div>
+          </div>
+          <button onclick="removeFromCart(${index})" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:1.5rem;">
+            <i class="material-icons">delete</i>
+          </button>
+        `;
+        cartItems.appendChild(div);
+      });
+      
+      cartTotal.textContent = total;
+    }
+
+    function removeFromCart(index) {
+      const cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      showToast('Producto eliminado');
+    }
+
+    function clearCart() {
+      localStorage.removeItem('palette_cart');
+      updateCartUI();
+      showToast('Carrito vaciado');
+    }
+
+    function openCart() {
+      document.getElementById('cart-modal').style.display = 'block';
+    }
+
+    function closeCart() {
+      document.getElementById('cart-modal').style.display = 'none';
+    }
+
+    function checkout() {
+      const cart = getCart();
+      if (cart.length === 0) {
+        showToast('Tu carrito está vacío');
+        return;
+      }
+      showToast('¡Gracias por tu compra! 🎉');
+      clearCart();
+      closeCart();
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerHTML = `<div class="toast-message">${message}</div>`;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    // Event Listeners
+    document.getElementById('cart-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      openCart();
+    });
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('cart-modal');
+      if (event.target == modal) {
+        closeCart();
+      }
+    }
+
+    // Filtros
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.producto').forEach(prod => {
+          if (filter === 'all' || prod.classList.contains(filter)) {
+            prod.style.display = 'block';
+          } else {
+            prod.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    updateCartUI();
+  </script>
+
+</body>
+</html>

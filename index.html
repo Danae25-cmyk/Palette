@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Palette - Personalización Minimalista</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #F4F4F4;
+      --primary: #b08e7a;
+      --dark: #2A2A2A;
+      --accent: #F36C3A;
+      --secondary-accent: #24B3A1;
+      --highlight: #F3B431;
+      --olive: #A7B36A;
+      --card-shadow: rgba(0,0,0,0.06);
+    }
+
+    * { box-sizing: border-box; }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      margin: 0;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .accent { color: var(--accent) !important; }
+    .primary-text { color: var(--primary); }
+    .centered { text-align: center; }
+    .section { padding: 48px 0; }
+    html { scroll-behavior: smooth; }
+
+    /* Navegación Mejorada */
+    nav {
+      background: var(--primary);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 120px; /* aumentado para alojar logo más grande */
+    }
+
+    .nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 120px; /* ajustado para centrar contenido */
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .brand-logo {
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: white !important;
+      font-size: 1.8rem;
+      text-decoration: none;
+      transition: transform 0.3s ease;
+    }
+
+    /* Logo responsive sizing (valores aumentados) */
+    .brand-logo img { height: 110px; width: auto; display: block; transition: height 200ms ease, transform 200ms ease; }
+    @media (max-width: 768px) { 
+      .brand-logo img { height: 88px; }
+      nav { height: 96px; padding: 6px 0; }
+      .nav-wrapper { height: 96px; padding: 0 20px; align-items: center; }
+    }
+    @media (max-width: 480px) { 
+      .brand-logo img { height: 72px; }
+      nav { height: 84px; padding: 4px 0; }
+      .nav-wrapper { height: 84px; padding: 0 12px; align-items: center; }
+    }
+
+    .brand-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      margin-left: auto;
+    }
+
+    .nav-links li {
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover { 
+      color: var(--accent) !important; 
+    }
+
+    .nav-links span {
+      display: inline;
+    }
+
+    .cart-icon-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    #cart-badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* Hero Section */
+    #hero {
+      margin-top: 120px; /* espacio acorde al nav aumentado */
+      padding: 100px 0;
+      background: linear-gradient(135deg, var(--primary) 60%, var(--accent) 100%);
+      text-align: center;
+    }
+
+    #hero h2 {
+      color: var(--primary);
+      font-size: 3rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-shadow: 1px 2px 8px var(--secondary-accent);
+    }
+
+    #hero p {
+      color: #f6f0f0;
+      max-width: 700px;
+      margin: 0 auto 35px;
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    /* Botones */
+    .btn-custom {
+      background-color: var(--primary);
+      color: #fff;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      font-weight: 600;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 30px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 1rem;
+      box-shadow: 0 2px 12px var(--accent);
+    }
+
+    .btn-custom:hover {
+      background-color: var(--secondary-accent);
+      color: var(--primary);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 8px 24px var(--primary);
+    }
+
+    /* Sección de Características */
+    .features-section {
+      padding: 60px 0;
+      background: white;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 30px;
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      font-size: 3.5rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+
+    .feature-title {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .feature-description {
+      color: #000000;
+      line-height: 1.6;
+    }
+
+    /* Productos Destacados Preview */
+    .preview-products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .preview-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px var(--card-shadow);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .preview-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.18);
+    }
+
+    .preview-card-image {
+      height: 250px;
+      overflow: hidden;
+    }
+
+    .preview-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .preview-card:hover .preview-card-image img {
+      transform: scale(1.08);
+    }
+
+    .preview-card-content {
+      padding: 25px;
+      text-align: center;
+    }
+
+    .preview-card-title {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .preview-card-description {
+      color: #f9f7f7;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+
+    /* Sección Nosotros */
+    #nosotros {
+      background-color: var(--accent);
+      color: white;
+      padding: 80px 0;
+    }
+
+    #nosotros h4 {
+      color: white;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    #nosotros p {
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 1.15rem;
+      line-height: 1.8;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--primary);
+      color: #fff;
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    footer p {
+      margin: 10px 0;
+    }
+
+    /* Modal del Carrito */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h5 {
+      color: var(--primary);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .close-modal {
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .close-modal:hover {
+      color: #000;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 15px;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      align-items: center;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-title {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .cart-item-details {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .cart-total {
+      text-align: right;
+      padding: 20px 0;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    /* Toast Mejorado */
+    .toast {
+      position: fixed;
+      top: 90px;
+      right: 30px;
+      background: white;
+      color: var(--primary);
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+      z-index: 10000;
+      opacity: 0;
+      transform: translateX(400px);
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      min-width: 300px;
+      border-left: 4px solid var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .toast::before {
+      content: '✓';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .toast-message {
+      flex: 1;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-wrapper {
+        padding: 0 20px;
+      }
+      
+      .brand-logo {
+        font-size: 1.4rem;
+      }
+      
+      .nav-links {
+        gap: 15px;
+      }
+      
+      .nav-links a {
+        font-size: 0.85rem;
+      }
+      
+      .nav-links span:not(.cart-icon-wrapper):not(#cart-badge) {
+        display: none;
+      }
+      
+      #hero h2 { 
+        font-size: 2rem; 
+      }
+      
+      #hero p {
+        font-size: 1rem;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .preview-products {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-wrapper">
+        <a href="index.html" class="brand-logo" style="display:flex;align-items:center;gap:10px;">
+          <img src="palette logo.png" alt="Palette logo">
+        </a>
+      <ul class="nav-links">
+        <li><a href="productos.html">Productos</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li>
+          <a href="#!" id="cart-btn">
+            <span class="cart-icon-wrapper">
+              <i class="material-icons">shopping_cart</i>
+              <span id="cart-badge">0</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <section id="hero">
+    <div class="container">
+      <h2>Haz que cada regalo sea <span class="accent">único</span> ✨</h2>
+      <p>Personaliza colores, frases y detalles para crear regalos realmente tuyos. Dale tu toque personal a cada producto.</p>
+      <a href="productos.html" class="btn-custom">Comenzar a personalizar</a>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <div class="container">
+      <h4 class="centered primary-text">
+        ¿Por qué elegir <span class="accent">Palette</span>?
+      </h4>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <i class="material-icons feature-icon">palette</i>
+          <div class="feature-title">Personalización Total</div>
+          <div class="feature-description">
+            Elige colores, textos y diseños para hacer cada producto único
+          </div>
+        </div>
+        
+        <div class="feature-card">
+          <i class="material-icons feature-icon">favorite</i>
+          <div class="feature-title">Hecho con Amor</div>
+          <div class="feature-description">
+            Cada pieza es cuidadosamente elaborada pensando en ti
+          </div>
+        </div>
+        
+        <div class="feature-card">
+          <i class="material-icons feature-icon">eco</i>
+          <div class="feature-title">Sostenible</div>
+          <div class="feature-description">
+            Materiales de calidad y procesos respetuosos con el ambiente
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <h4 class="centered primary-text">
+      Productos <span class="accent">Destacados</span>
+    </h4>
+    
+    <div class="preview-products">
+      <a href="productos.html" class="preview-card">
+        <div class="preview-card-image">
+          <img src="https://images.unsplash.com/photo-1503602642458-232111445657?w=400" alt="Silla">
+        </div>
+        <div class="preview-card-content">
+          <div class="preview-card-title">Sillas Personalizadas</div>
+          <div class="preview-card-description">Elige el color perfecto para tu espacio</div>
+          <span class="btn-custom" style="font-size: 0.9rem; padding: 10px 20px;">Ver más</span>
+        </div>
+      </a>
+      
+      <a href="productos.html" class="preview-card">
+        <div class="preview-card-image">
+          <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400" alt="Maceta">
+        </div>
+        <div class="preview-card-content">
+          <div class="preview-card-title">Macetas Artesanales</div>
+          <div class="preview-card-description">Dale vida a tus plantas con estilo</div>
+          <span class="btn-custom" style="font-size: 0.9rem; padding: 10px 20px;">Ver más</span>
+        </div>
+      </a>
+      
+      <a href="productos.html" class="preview-card">
+        <div class="preview-card-image">
+          <img src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=400" alt="Cuadro">
+        </div>
+        <div class="preview-card-content">
+          <div class="preview-card-title">Cuadros Decorativos</div>
+          <div class="preview-card-description">Personaliza tu pared con arte único</div>
+          <span class="btn-custom" style="font-size: 0.9rem; padding: 10px 20px;">Ver más</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section id="nosotros">
+    <div class="container centered">
+      <h4>Sobre Palette</h4>
+      <p>
+        En <strong>Palette</strong> creemos que los regalos más especiales son los que llevan una parte de ti. 
+        Aquí puedes personalizar objetos con tus colores, frases y diseños favoritos, para que cada pieza sea realmente tuya.
+        Nuestra misión es ayudarte a crear momentos únicos e inolvidables.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p><strong>Palette</strong> © 2025 - Creado con 💖</p>
+      <p>Personalización minimalista y sostenible</p>
+    </div>
+  </footer>
+
+  <!-- Modal del Carrito -->
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>
+          <i class="material-icons">shopping_bag</i>
+          Tu Carrito
+        </h5>
+        <button class="close-modal" onclick="closeCart()">&times;</button>
+      </div>
+      <div id="cart-items"></div>
+      <div class="cart-total">
+        Total: Bs. <span id="cart-total">0</span>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-custom" style="background: var(--accent);" onclick="clearCart()">Vaciar</button>
+        <button class="btn-custom" onclick="checkout()">Comprar ahora</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Carrito compartido usando localStorage
+    function getCart() {
+      const cart = localStorage.getItem('palette_cart');
+      return cart ? JSON.parse(cart) : [];
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem('palette_cart', JSON.stringify(cart));
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const cart = getCart();
+      const badge = document.getElementById('cart-badge');
+      badge.textContent = cart.length;
+      
+      const cartItems = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p style="text-align: center; color: #999; padding: 40px 0;">Tu carrito está vacío</p>';
+        cartTotal.textContent = '0';
+        return;
+      }
+      
+      let total = 0;
+      cartItems.innerHTML = '';
+      
+      cart.forEach((item, index) => {
+        total += item.price;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.title}">
+          <div class="cart-item-info">
+            <div class="cart-item-title">${item.title}</div>
+            <div class="cart-item-details">
+              Color: <span style="display:inline-block;width:20px;height:20px;background:${item.color};border-radius:4px;vertical-align:middle;border:1px solid #ddd;"></span>
+              <br>Texto: ${item.texto}
+              <br><strong>Bs. ${item.price}</strong>
+            </div>
+          </div>
+          <button onclick="removeFromCart(${index})" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:1.5rem;">
+            <i class="material-icons">delete</i>
+          </button>
+        `;
+        cartItems.appendChild(div);
+      });
+      
+      cartTotal.textContent = total;
+    }
+
+    function removeFromCart(index) {
+      const cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      showToast('Producto eliminado');
+    }
+
+    function clearCart() {
+      localStorage.removeItem('palette_cart');
+      updateCartUI();
+      showToast('Carrito vaciado');
+    }
+
+    function openCart() {
+      document.getElementById('cart-modal').style.display = 'block';
+    }
+
+    function closeCart() {
+      document.getElementById('cart-modal').style.display = 'none';
+    }
+
+    function checkout() {
+      const cart = getCart();
+      if (cart.length === 0) {
+        showToast('Tu carrito está vacío');
+        return;
+      }
+      showToast('¡Gracias por tu compra! 🎉');
+      clearCart();
+      closeCart();
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerHTML = `<div class="toast-message">${message}</div>`;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    // Event Listeners
+    document.getElementById('cart-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      openCart();
+    });
+
+    // Cerrar modal al hacer clic fuera
+    window.onclick = function(event) {
+      const modal = document.getElementById('cart-modal');
+      if (event.target == modal) {
+        closeCart();
+      }
+    }
+
+    // Inicializar
+    updateCartUI();
+  </script>
+
+</body>
+</html>
